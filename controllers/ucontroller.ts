@@ -20,16 +20,16 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   if (await user.passwordCheck(password)) {
     res.status(200).json({
-      success: true,
+      
       user: {
         id: user._id,
-        email: user.email,
         firstName :user.firstName,
         lastName: user.lastName,
+        email: user.email,
         role:user.role,
         token: generateToken(user._id),
         refreshToken: generateRefreshToken(),
-      },
+      },success_message: true,
     });
   } else {
     res.status(401);
@@ -56,13 +56,12 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
 
 
-// Controller to edit user profile
 export const editUserProfile = async (req: Request, res: Response): Promise<void> => {
   const { id, firstName, lastName, email } = req.body;
-  const loggedInUser = req.body as UserInterface; // Assuming you have implemented authentication middleware to set the logged-in user in the request object.
+  const loggedInUser = req.body as UserInterface;
 
   try {
-    // Check if the logged-in user is an admin (role=1)
+
     if (loggedInUser.role === '1') {
    
       const userToEdit = await UserModel.findById(id);
@@ -72,18 +71,15 @@ export const editUserProfile = async (req: Request, res: Response): Promise<void
          return;
       }
 
-      // Update the user profile with the provided data
       userToEdit.firstName = firstName;
       userToEdit.lastName = lastName;
       userToEdit.email = email;
-
-      // Save the changes to the user's profile
       await userToEdit.save();
 
        res.status(200).json({ message: 'User profile updated successfully' });
        return;
     } else if (loggedInUser.role === '0') {
-      // Non-admin users (role=0) can only edit their own profile
+    
       if (loggedInUser._id.toString() === id) {
         loggedInUser.firstName = firstName;
         loggedInUser.lastName = lastName;
@@ -125,18 +121,19 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
         });
         await user.save();
 
-        res.status(201).json({ success: true, user: {
-            email: user.email,
+        res.status(201).json({  user: {
+            
             firstName: user.firstName,
             lastName: user.lastName,
+            email: user.email,
             token: generateToken(user._id),
             role:user.role,
             refreshToken : user.refreshToken
-        } });
+        } ,success_of_request: true,});
         }
         else{
             res.json({
-                message : "Choose stronger password"
+                message : "Choose stronger password it should be atleast 8 words with one capital and one special character"
             })
         }
         }else{
@@ -146,7 +143,8 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
         }
     }else{
         res.json({
-            message : "User exists"
+            message : "User already exists",
+            advice: "please login...."
         })
     }
 
@@ -162,11 +160,18 @@ export const refreshTokenHandler = asyncHandler(async (req: Request, res: Respon
         token: generateToken(userId),
         refreshToken: generateRefreshToken(),
       },
-    });
+    },{ new: true });
+    const updatedUser = await UserModel.findById(userId);
+    if (updatedUser) {
     res.status(200).json({
       message: 'Access token refreshed!',
+      refresh_new:updatedUser.refreshToken,
+      firstName:updatedUser.firstName,
+      lastName:updatedUser.lastName,
+      token_new:updatedUser.token
     });
-  } else {
+  }}
+  else {
     res.json({
       message: 'Incorrect refresh token',
     });

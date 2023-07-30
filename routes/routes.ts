@@ -4,7 +4,7 @@ import { getAllUsers, loginUser, registerUser, refreshTokenHandler, deleteUser,e
 const router = express.Router();
 
 router.route("/all_users").get(getAllUsers);
-router.route("/login").post(loginUser);
+router.route("/login").get(loginUser);
 router.route("/profile").get();
 router.post("/register", registerUser);
 router.post("/refresh",refreshTokenHandler);
