@@ -64,7 +64,7 @@ export const editUserProfile = async (req: Request, res: Response): Promise<void
   try {
     // Check if the logged-in user is an admin (role=1)
     if (loggedInUser.role === '1') {
-      // Find the user to be edited by the provided ID
+   
       const userToEdit = await UserModel.findById(id);
 
       if (!userToEdit) {
