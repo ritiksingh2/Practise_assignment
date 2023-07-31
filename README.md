@@ -23,17 +23,35 @@ the task
 
 ### Outputs
 
-<img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/already_exist.PNG"> <br><br>
 
+### Database snapshot
 <img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/db.PNG"> <br><br>
 
+
+## Register new User
+<img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/register.PNG"> <br><br>
+
+
+### User Already exist 
+<img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/already_exist.PNG"> <br><br>
+
+### Login success
+<img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/login.PNG"> <br><br>
+
+
+
+### Incorrect Token
 <img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/incorrect_token.PNG"> <br><br>
 
-<img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/login.PNG"> <br><br>
+
+### Database snapshot
+<img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/db.PNG"> <br><br>
+
+## Refreshed Token with user Info
 
 <img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/refresh_token_success.PNG"> <br><br>
 
-<img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/register.PNG"> <br><br>
+## Password Checker
 
 <img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/stronger_password.PNG"> <br><br>
 
