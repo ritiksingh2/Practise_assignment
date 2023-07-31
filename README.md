@@ -44,9 +44,6 @@ the task
 <img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/incorrect_token.PNG"> <br><br>
 
 
-### Database snapshot
-<img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/db.PNG"> <br><br>
-
 ## Refreshed Token with user Info
 
 <img src="https://github.com/ritiksingh2/node_assignment/blob/master/screenshots/refresh_token_success.PNG"> <br><br>
