@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <title>E-Commerce</title>
+</head>
+<body>
+    <div class="container my-5">
+        <h2 class="text-center">Akshay Store (Admin Page)</h2>
+        <form id="store-form">
+            <div class="form-group">
+                <label for="price">PRICE</label>
+                <input type="number" class="form-control" id="price" placeholder="Enter the amount">
+            </div>
+            <div class="form-group my-3">
+                <label for="name">PRODUCT NAME</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter the product name">
+            </div>
+            <button type="submit" class="btn btn-primary my-3">ADD THE PRODUCT</button>
+        </form>
+        <h3 class=" text-left">Total Worth of Products: <span id="total-worth">0.00</span></h3>
+        <table class="table my-3">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="product-list">
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+<script>
+    let productDetails = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        axios.get('https://crudcrud.com/api/c58b7308c2114e7c9e65da2b466f6aeb')
+            .then(response => {
+            productDetails = response.data;
+            console.log('Retrieved product details', productDetails);
+            displayData(productDetails);
+            })
+    })
+
+    function displayData(products) {
+        const totalWorth = products.reduce((sum, product) => sum + product.price, 0);
+        const totalWorthElement = document.querySelector('h3');
+        totalWorthElement.innerText = `Total Worth of Products: ${totalWorth.toFixed(2)}`;
+
+        const productList = document.querySelector('#product-list');
+        productList.innerHTML = '';
+
+        products.forEach((product) => {
+            const productElement = document.createElement('li');
+            productElement.innerText = `${product.name} - ${product.price}`;
+            
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Delete';
+            deleteButton.addEventListener('click', () => deleteProduct(product._id));
+            productElement.appendChild(deleteButton);
+            
+            productList.appendChild(productElement);
+        });
+    }
+
+    function addProduct(event) {
+        event.preventDefault();
+
+        const priceElement = document.querySelector('#price');
+        const nameElement = document.querySelector('#name');
+
+        const price = parseFloat(priceElement.value);
+        const name = nameElement.value.trim();
+
+        if (!price || !name) {
+            alert('Please enter valid price and product name');
+            return;
+        }
+
+        const newProduct = { price, name };
+        axios.post('https://crudcrud.com/api/c58b7308c2114e7c9e65da2b466f6aeb', newProduct)
+            .then(response => {
+            console.log('Added new product', response.data);
+            productDetails.push(response.data);
+            displayData(productDetails);
+            })
+
+        priceElement.value = '';
+        nameElement.value = '';
+    }
+
+    function deleteProduct(productId) {
+        axios.delete(`https://crudcrud.com/api/c58b7308c2114e7c9e65da2b466f6aeb${productId}`)
+            .then(response => {
+            console.log('Deleted product', response.data);
+            productDetails = productDetails.filter(product => product._id !== productId);
+            displayData(productDetails);
+            });
+    }
+
+    const formElement = document.querySelector('#store-form');
+    formElement.addEventListener('submit', addProduct);
+
+
+</script>
+</html>

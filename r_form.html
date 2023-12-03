@@ -1,0 +1,227 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container my-5">
+      <h2 class="text-center">Book a Slot</h2>
+      <form id="booking-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
+        </div>
+        <div class="form-group">
+          <label for="time">Time</label>
+          <input type="date" class="form-control" id="time" >
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </body>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Make a GET request to crudcrud.com to retrieve the user details
+      axios.get('https://crudcrud.com/api/037f3cf39e4049adba586fcb0216204d/bookingAppointments')
+        .then(response => {
+          const userDetails = response.data;
+          console.log('Retrieved user details:', userDetails);
+
+          displayData(userDetails);
+
+          // Update the HTML on the page with the retrieved user details
+          const nameElement = document.getElementById('name');
+          nameElement.textContent = userDetails.name;
+
+          const emailElement = document.getElementById('email');
+          emailElement.textContent = userDetails.email;
+
+          const phoneElement = document.getElementById('phone');
+          phoneElement.textContent = userDetails.phone;
+
+          const addressElement = document.getElementById('time');
+          addressElement.textContent = userDetails.address;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+       
+        
+    });
+
+    // document.querySelector('#booking-form').addEventListener('submit', (event) => {
+    //       event.preventDefault();
+    //       const formData = {
+    //         name: document.querySelector('#name').value,
+    //         email: document.querySelector('#email').value,
+    //         phone: document.querySelector('#phone').value,
+    //         time: document.querySelector('#time').value
+    //       };
+    //       axios.post('https://crudcrud.com/api/037f3cf39e4049adba586fcb0216204d/bookingAppointments', formData)
+    //         .then(response => {
+    //           console.log(response.data);
+              
+    //         })
+    //         .catch(error => {
+    //           console.log(error);
+    //         });
+
+    //       //localStorage.setItem("user", JSON.stringify(formData));
+    //       displayData(formData);
+    //     });
+
+        // function displayData(userData) {
+        //     const previousDataContainer = document.querySelector('.container div');
+        //     if (previousDataContainer) {
+        //       previousDataContainer.remove();
+        //     }
+
+        //     const dataContainer = document.createElement("div");
+        //     dataContainer.innerHTML = `
+        //       <p><b>Name:</b> ${userData.name}</p>
+        //       <p><b>Email:</b> ${userData.email}</p>
+        //       <p><b>Phone:</b> ${userData.phone}</p>
+        //       <p><b>Time:</b> ${userData.time}</p>
+        //       <button id="edit-button">Edit</button>
+        //       <button id="delete-button">Delete</button>
+        //     `;
+        //     document.querySelector(".container").appendChild(dataContainer);
+
+        //     document.querySelector("#edit-button").addEventListener("click", () => {
+        //       // Remove previous data
+        //       dataContainer.remove();
+        //       localStorage.removeItem("user");
+
+        //       // Add the user data to the form inputs
+        //       document.querySelector('#name').value = userData.name;
+        //       document.querySelector('#email').value = userData.email;
+        //       document.querySelector('#phone').value = userData.phone;
+        //       document.querySelector('#time').value = userData.time;
+        //     });
+
+        //     document.querySelector("#delete-button").addEventListener("click", () => {
+        //       dataContainer.remove();
+        //       localStorage.removeItem("user");
+        //     });
+        //   }
+        function displayData(userData) {
+            const previousDataContainer = document.querySelector('.container div');
+            if (previousDataContainer) {
+              previousDataContainer.remove();
+            }
+
+            const dataContainer = document.createElement("div");
+            dataContainer.innerHTML = `
+              <p><b>Name:</b> ${userData.name}</p>
+              <p><b>Email:</b> ${userData.email}</p>
+              <p><b>Phone:</b> ${userData.phone}</p>
+              <p><b>Time:</b> ${userData.time}</p>
+              <button id="edit-button">Edit</button>
+              <button id="delete-button">Delete</button>
+            `;
+            document.querySelector(".container").appendChild(dataContainer);
+
+            document.querySelector("#edit-button").addEventListener("click", () => {
+              // Remove previous data
+              dataContainer.remove();
+              localStorage.removeItem("user");
+
+              // Add the user data to the form inputs
+              document.querySelector('#name').value = userData.name;
+              document.querySelector('#email').value = userData.email;
+              document.querySelector('#phone').value = userData.phone;
+              document.querySelector('#time').value = userData.time;
+            });
+
+            document.querySelector("#delete-button").addEventListener("click", () => {
+              // Remove the data container
+              dataContainer.remove();
+
+              // Clear the form inputs
+              document.querySelector('#name').value = '';
+              document.querySelector('#email').value = '';
+              document.querySelector('#phone').value = '';
+              document.querySelector('#time').value = '';
+
+              // Send a DELETE request to crudcrud.com to delete the user data
+              axios.delete(`https://crudcrud.com/api/037f3cf39e4049adba586fcb0216204d/bookingAppointments/${userData._id}`)
+                .then(response => {
+                  console.log(response.data);
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            });
+   }
+   document.querySelector('#edit-button').addEventListener('click', () => {
+        // Change the form button to update instead of submit
+        const submitButton = document.querySelector('button[type="submit"]');
+        submitButton.textContent = 'Update';
+        submitButton.setAttribute('data-action', 'update');
+
+        // Populate the form fields with the current user data
+        const nameElement = document.querySelector('#name');
+        nameElement.value = userDetails.name;
+
+        const emailElement = document.querySelector('#email');
+        emailElement.value = userDetails.email;
+
+        const phoneElement = document.querySelector('#phone');
+        phoneElement.value = userDetails.phone;
+
+        const timeElement = document.querySelector('#time');
+        timeElement.value = userDetails.time;
+      });
+
+// Handle form submit for updating an existing appointment
+    document.querySelector('#booking-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const submitButton = document.querySelector('button[type="submit"]');
+      const action = submitButton.getAttribute('data-action');
+
+      if (action === 'update') {
+        // Make a PUT request to update the appointment
+        const formData = {
+          name: document.querySelector('#name').value,
+          email: document.querySelector('#email').value,
+          phone: document.querySelector('#phone').value,
+          time: document.querySelector('#time').value
+        };
+
+        axios.put(`https://crudcrud.com/api/037f3cf39e4049adba586fcb0216204d/bookingAppointments/${userDetails._id}`, formData)
+          .then(response => {
+            console.log(response.data);
+
+            // Update the user details and display them on the page
+            userDetails = response.data;
+            displayData(userDetails);
+
+            // Reset the form and change the button back to submit
+            document.querySelector('#booking-form').reset();
+            submitButton.textContent = 'Submit';
+            submitButton.removeAttribute('data-action');
+          })
+          .catch(error => {
+            console.log(error);
+          });
+  }
+});
+
+
+
+
+</script>
+
+</html>
